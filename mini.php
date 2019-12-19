@@ -32,19 +32,9 @@ $startURL = "";
 //When no $startURL is configured above, miniProxy will show its own landing page with a URL form field
 //and the configured example URL. The example URL appears in the instructional text on the miniProxy landing page,
 //and is proxied when pressing the 'Proxy It!' button on the landing page if its URL form is left blank.
-$landingExampleURL = "https://old.reddit.com";
+$landingExampleURL = "https://example.net";
 
 /****************************** END CONFIGURATION ******************************/
-
-//Fix https and heroku
-if ($_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
-  $_SERVER['HTTPS']='on';
-  $_SERVER["SERVER_PORT"]=443;
-}
-
-if ($_SERVER['HTTP_X_FORWARDED_PROTO'] == 'http') {
-  $_SERVER["SERVER_PORT"]=80;
-}
 
 ob_start("ob_gzhandler");
 
@@ -286,7 +276,7 @@ if (isset($_POST["miniProxyFormAction"])) {
 }
 if (empty($url)) {
     if (empty($startURL)) {
-      die("<style> body{margin: 0px auto;text-align: center;} body {background-color: black ;} body {color: green;} h1 {color: purple;}></style><html><head><title>GoldenNetwork Proxy</title></head><body><h1>GoldenNetwork Proxy V2</h1>	You can directly visit website URLs by doing the following: <a href=\"" . PROXY_PREFIX . $landingExampleURL . "\">" . PROXY_PREFIX . $landingExampleURL . "</a><br /><br />Or, you can simply enter a URL below:<br /><br /><form onsubmit=\"if (document.getElementById('site').value) { window.location.href='" . PROXY_PREFIX . "' + document.getElementById('site').value; return false; } else { window.location.href='" . PROXY_PREFIX . $landingExampleURL . "'; return false; }\" autocomplete=\"off\"><input id=\"site\" type=\"text\" size=\"50\" /><input type=\"submit\" value=\"Surf Freely!\" /></form><a>Many websites can be unblocked with this, including some games!</body></html>");
+      die("<html><head><title>miniProxy</title></head><body><h1>Welcome to miniProxy!</h1>miniProxy can be directly invoked like this: <a href=\"" . PROXY_PREFIX . $landingExampleURL . "\">" . PROXY_PREFIX . $landingExampleURL . "</a><br /><br />Or, you can simply enter a URL below:<br /><br /><form onsubmit=\"if (document.getElementById('site').value) { window.location.href='" . PROXY_PREFIX . "' + document.getElementById('site').value; return false; } else { window.location.href='" . PROXY_PREFIX . $landingExampleURL . "'; return false; }\" autocomplete=\"off\"><input id=\"site\" type=\"text\" size=\"50\" /><input type=\"submit\" value=\"Proxy It!\" /></form></body></html>");
     } else {
       $url = $startURL;
     }
@@ -315,7 +305,7 @@ foreach ($whitelistPatterns as $pattern) {
   }
 }
 if (!$urlIsValid) {
-  die("Error: The requested URL is invalid.");
+  die("Error: The requested URL was disallowed by the server administrator.");
 }
 
 $response = makeRequest($url);
@@ -455,14 +445,14 @@ if (stripos($contentType, "text/html") !== false) {
 
   $head = $xpath->query("//head")->item(0);
   $body = $xpath->query("//body")->item(0);
-  $prependElem = $head != NULL ? $head : $body;
+  $prependElem = $head != null ? $head : $body;
 
   //Only bother trying to apply this hack if the DOM has a <head> or <body> element;
   //insert some JavaScript at the top of whichever is available first.
   //Protects against cases where the server sends a Content-Type of "text/html" when
   //what's coming back is most likely not actually HTML.
   //TODO: Do this check before attempting to do any sort of DOM parsing?
-  if ($prependElem != NULL) {
+  if ($prependElem != null) {
 
     $scriptElem = $doc->createElement("script",
       '(function() {
