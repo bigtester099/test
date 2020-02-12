@@ -1,5 +1,5 @@
 {
-        "name": "titaniumnetwork-dev/phoenix-reborn",
+        "name": "bigtester099/test",
         "type": "project",
         "license": "MIT",
         "description": "Web proxy application project powered by PHP-Proxy library",
@@ -13,7 +13,6 @@
         "require": {
                 "athlon1600/php-proxy": "dev-master",
                 "athlon1600/php-proxy-plugin-bundle": "dev-master",
-                "athlon1600/php-proxy-plugin-cache": "@dev"
                 "ext-mbstring": "^7.2",
                 "ext-gd": "^7.2",
                 "ext-sqlite3": "^7.2",
