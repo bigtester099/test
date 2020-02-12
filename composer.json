@@ -13,6 +13,7 @@
         "require": {
                 "athlon1600/php-proxy": "dev-master",
                 "athlon1600/php-proxy-plugin-bundle": "dev-master",
+                "athlon1600/php-proxy-plugin-cache": "@dev"
                 "ext-mbstring": "^7.2",
                 "ext-gd": "^7.2",
                 "ext-sqlite3": "^7.2",
